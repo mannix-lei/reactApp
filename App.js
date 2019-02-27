@@ -10,18 +10,39 @@ class HomeScreen extends React.Component {
       <View style={{ fles: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>this is home screen</Text>
         <Text>Home Screen</Text>
-        <Button title="uuu" onClick={() => this.props.navigation.navigate('Details')}>FOO</Button>
+        <Button onClick={() => this.props.navigation.navigate('Details', { itemId: '欢迎光临', otherParam: 'anything u want here'})}>FOO</Button>
       </View>
     );
   }
 }
 
 class DetailsScreen extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    }
+  }
+
+  componentDidMount() {
+    alert(this.props.navigation.state.params.itemId)
+  }
+
   render() {
+
+    const { navigation } = this.props;
+    const itemId = navigation.getParam('itemId', 'NO-ID');
+    const otherParam = navigation.getParam('otherParam', 'some default value');
+
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Details Screen</Text>
-        <Button title="uuu" onClick={() => this.props.navigation.navigate('third')}>BAR</Button>
+        <Text>itemId: { itemId }</Text>
+        <Text>otherParam: { otherParam }</Text>
+        <Button onClick={() => this.props.navigation.navigate('third')}>BAR</Button>
+        <Button onClick={() => this.props.navigation.navigate('Home')}>home</Button>
+        <Button onClick={() => this.props.navigation.goBack()}>go back</Button>
       </View>
     )
   }
@@ -32,6 +53,9 @@ class ThirdScreen extends Component {
     return (
       <View style={{ backgroundColor: 'yellow', width: '100%', height: '100%' }}>
         <Text>this is third screen.</Text>
+        <Button onClick={ () => this.props.navigation.popToTop()}>to top</Button>
+        <Button onClick={ () => this.props.navigation.push('third')}>to third</Button>
+        <Button onClick={() => this.props.navigation.goBack()}>go back</Button>
       </View>
     )
   }
@@ -47,6 +71,22 @@ const AppNavigator = createStackNavigator(
     initialRouteName: 'Home'
   }
 );
+
+// const HomeStack = createStackNavigator({
+//   Home: HomeScreen,
+//   Details: DetailsScreen,
+//   third: ThirdScreen,
+// })
+
+// const SettingsStack = createStackNavigator({
+//   Settings: SettingsScreen,
+//   Profile: ProfileScreen,
+// })
+
+// const TabNavigator = createBottomTabNavigator({
+//   Home: HomeStack,
+//   Settings: SettingsStack,
+// })
 
 const AppContainer = createAppContainer(AppNavigator);
 export default class App extends Component {
