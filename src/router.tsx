@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { StatusBar, View, DeviceEventEmitter } from 'react-native';
-import { createAppContainer, createBottomTabNavigator, NavigationActions, NavigationContainerComponent, createStackNavigator } from 'react-navigation';
+import { createAppContainer, createBottomTabNavigator, NavigationActions, NavigationContainerComponent, createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import Login from './Views/Login';
 import Home from './Views/Home';
+import AuthLoadingScreen from './Views/AuthLoadingScreen';
 import Contacts from './Views/Contacts';
+import { Button } from 'antd-mobile-rn';
 
-const MainNavigator = createStackNavigator(
+const AppStack = createStackNavigator(
     {
         Home: { 
             screen: Home,
@@ -22,19 +24,14 @@ const MainNavigator = createStackNavigator(
                 }
             },
         },
-        Login: {
-            screen: Login,
-            navigationOptions: ({ navigation }: any) => {
-                return {
-                    title: navigation.getParam('routeName', 'Login'),
-                }
-            }
-        },
         Contacts: {
             screen: Contacts,
             navigationOptions: ({ navigation }: any) => {
                 return {
                     title: navigation.getParam('routeName', 'Contacts'),
+                    headerRight: (
+                        <Button onClick={navigation.getParam('count')}>+1</Button>
+                    )
                 }
             }
         }
@@ -44,36 +41,50 @@ const MainNavigator = createStackNavigator(
     }
 )
 
-const TabBottomNavigator = createBottomTabNavigator(
+/**
+ * 登陆验证
+ */
+const AuthStack = createStackNavigator(
     {
-        Home: {
-            screen: Home,
-        },
-        Login: {
+        SignIn: {
             screen: Login,
-        }
+            navigationOption: ({ navigation }: any) => {
+                return {
+                    title: navigation.getParam('routeName', 'please Sign in...')
+                }
+            }
+        },
     },
     {
-        initialRouteName: 'Home',
+        initialRouteName: 'SignIn',
     }
 )
 
-// state = {
-//     index: 0,
-//     routes: [
-//         { key: 'music', title: 'Music', icon: 'queue-music' },
-//         { key: 'albums', title: 'Albums', icon: 'albums' },
-//         { key: 'recents', title: 'Recents', icon: 'history' },
-//     ],
-// };
-// _handleIndexChange = (index: number) => this.setState({ index });
-// _renderScene = BottomNavigation.SceneMap({
-//     music: MusicRoute,
-//     albums: AlbumsRoute,
-//     recents: RecentsRoute,
-// });
+/**
+ * tab页
+ */
+// AppStack.navigationOptions = (
+//     {
+//         Home: {
+//             screen: Home,
+//         },
+//         Contacts: {
+//             screen: Contacts,
+//         }
+//     }
+// )
 
-// <BottomNavigation navigationState={this.state} onIndexChange={this._handleIndexChange} renderScene={this._renderScene} />
-
-const AppContainer = createAppContainer(MainNavigator);
+/**
+ * 容器
+ */
+const AppContainer = createAppContainer(createSwitchNavigator(
+    {
+        AuthLoading: AuthLoadingScreen,
+        App: AppStack,
+        Auth: AuthStack,
+    },
+    {
+        initialRouteName: 'AuthLoading',
+    }
+));
 export default AppContainer;
