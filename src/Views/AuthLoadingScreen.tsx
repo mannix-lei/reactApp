@@ -18,7 +18,7 @@ export default class AuthLoadingScreen extends Component {
     _bootstrapAsync = async () => {
         const token = await AsyncStorage.getItem('token');
         let timeOut = setInterval(() => {
-            if(time === 0){
+            if(time === 1){
                 clearInterval(timeOut);
                 (this.props as any).navigation.navigate(token ? 'App' : 'Auth');
             }

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { StatusBar, View, DeviceEventEmitter } from 'react-native';
+import { StatusBar, View, DeviceEventEmitter, Text } from 'react-native';
 import { createAppContainer, createBottomTabNavigator, NavigationActions, NavigationContainerComponent, createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import Login from './Views/Login';
 import Home from './Views/Home';
 import AuthLoadingScreen from './Views/AuthLoadingScreen';
 import Contacts from './Views/Contacts';
 import { Button } from 'antd-mobile-rn';
+import SignInScreen from './Views/SignInScreen';
 
 const AppStack = createStackNavigator(
     {
@@ -13,7 +14,7 @@ const AppStack = createStackNavigator(
             screen: Home,
             navigationOptions: ({ navigation }: any) => {
                 return {
-                    title: navigation.getParam('routeName', 'WeChat'),
+                    title: navigation.getParam('routeName', '58企服'),
                     // headerStyle: {
                     //     backgroundColor: 'green',
                     // },
@@ -48,12 +49,20 @@ const AuthStack = createStackNavigator(
     {
         SignIn: {
             screen: Login,
-            navigationOption: ({ navigation }: any) => {
+            navigationOptions: ({ navigation }: any) => {
                 return {
-                    title: navigation.getParam('routeName', 'please Sign in...')
+                    title: navigation.getParam('routeName')
                 }
             }
         },
+        LoginIn: {
+            screen: SignInScreen,
+            navigationOptions: ({ navigation }: any) => {
+                return {
+                    title: navigation.getParam('routeName', 'Sign In'),
+                }
+            }
+        }
     },
     {
         initialRouteName: 'SignIn',
@@ -63,16 +72,16 @@ const AuthStack = createStackNavigator(
 /**
  * tab页
  */
-// AppStack.navigationOptions = (
-//     {
-//         Home: {
-//             screen: Home,
-//         },
-//         Contacts: {
-//             screen: Contacts,
-//         }
-//     }
-// )
+AppStack.navigationOptions = (
+    {
+        Home: {
+            screen: Home,
+        },
+        Contacts: {
+            screen: Contacts,
+        }
+    }
+)
 
 /**
  * 容器

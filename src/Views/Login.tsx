@@ -5,23 +5,14 @@ import { Button } from 'antd-mobile-rn';
 
 export default class Login extends Component {
 
-    static navigationOptions = ({ navigation }: any) => {
-        return {
-            title: 'Login',
-        }
-    }
-
-    _signInAsync = async () => {
-        await AsyncStorage.setItem('token', 'abc');
-        (this.props as any).navigation.navigate('App');
-    };
-
     render() {
         return (
             <View style={ styles.bg }>
                 <Image source={require('../img/logo.png')} style={styles.img} />
-               <Button onClick={ () => this._signInAsync()}>登录</Button>
-               <Button onClick={ () => alert('zhuce')}>注册</Button>
+                <View style={styles.btnGroup}>
+                    <Button style={styles.btn} type="primary" onClick={ () => (this.props as any).navigation.navigate('LoginIn') }>登录</Button>
+                    <Button style={styles.btn} onClick={ () => alert('zhuce')}>注册</Button>
+                </View>
             </View>
         )
     }
@@ -29,17 +20,29 @@ export default class Login extends Component {
 
 const styles = StyleSheet.create({
     bg: {
-        backgroundColor: 'rgba(0,0,0,0.3)',
+        backgroundColor: 'rgba(0,0,0,0)',
         width: '100%',
         height: '100%',
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center'
     },
     title: {
         fontSize: 50,
         fontFamily: "Times New Roman",
     },
     img: {
+        marginTop: 60,
         width: 240,
         height: 80,
-        
+    },
+    btnGroup: {
+        marginTop: 400,
+        flex: 1,
+        flexDirection: 'row',
+    },
+    btn: {
+        width: 150,
+        margin: 10,
     }
-}) 
+})
