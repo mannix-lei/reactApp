@@ -8,6 +8,14 @@ import Contacts from './Views/Contacts';
 import { Button } from 'antd-mobile-rn';
 import SignInScreen from './Views/SignInScreen';
 
+const style = {
+    color: 'white',
+    fontSize: 20,
+    marginTop: 10,
+    backgroundColor: '#3399FF',
+    border: 0,
+}
+
 const AppStack = createStackNavigator(
     {
         Home: { 
@@ -15,13 +23,17 @@ const AppStack = createStackNavigator(
             navigationOptions: ({ navigation }: any) => {
                 return {
                     title: navigation.getParam('routeName', '58企服'),
-                    // headerStyle: {
-                    //     backgroundColor: 'green',
-                    // },
-                    // headerTintColor: 'yellow',
-                    // headerTitleStyle: {
-                    //     fontWeight: 'bold',
-                    // }
+                    headerStyle: {
+                        backgroundColor: '#3399FF',
+                        height: 60,
+                    },
+                    headerTintColor: 'yellow',
+                    headerTitleStyle: {
+                        fontSize: 24,
+                    },
+                    headerRight: (
+                        <Button style={style} type="primary" onPress={ () => alert('login out') }>登出</Button>
+                    )
                 }
             },
         },
@@ -60,6 +72,9 @@ const AuthStack = createStackNavigator(
             navigationOptions: ({ navigation }: any) => {
                 return {
                     title: navigation.getParam('routeName', 'Sign In'),
+                    headerStyle: {
+
+                    }
                 }
             }
         }
@@ -72,16 +87,16 @@ const AuthStack = createStackNavigator(
 /**
  * tab页
  */
-AppStack.navigationOptions = (
-    {
-        Home: {
-            screen: Home,
-        },
-        Contacts: {
-            screen: Contacts,
-        }
-    }
-)
+// AppStack.navigationOptions = (
+//     {
+//         Home: {
+//             screen: Home,
+//         },
+//         Contacts: {
+//             screen: Contacts,
+//         }
+//     }
+// )
 
 /**
  * 容器
