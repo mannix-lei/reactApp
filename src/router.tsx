@@ -32,7 +32,7 @@ const AppStack = createStackNavigator(
                         fontSize: 24,
                     },
                     headerRight: (
-                        <Button style={style} type="primary" onPress={ () => alert('login out') }>登出</Button>
+                        <Button style={style} type="primary" onClick={ () => alert('login out') }>登出</Button>
                     )
                 }
             },

@@ -25,8 +25,7 @@ import { BottomNavigation, Text } from 'react-native-paper';
 
 //     return <ScrollView style={{ backgroundColor: '#fff' }}>{content}</ScrollView>
 // }
-
-
+    
 export default class HomeScreen extends Component {
 
     state = {
@@ -40,6 +39,12 @@ export default class HomeScreen extends Component {
         await AsyncStorage.clear();
         (this.props as any).navigation.navigate('Auth');
     }
+
+    // const numRender = render() {
+    //     return (
+    //         <Text style={{ color: 'blue'}}>{this.state.Pending}</Text>
+    //     )
+    // };
 
     render() {
 
