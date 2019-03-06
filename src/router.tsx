@@ -1,114 +1,109 @@
 import React, { Component } from 'react';
-import { StatusBar, View, DeviceEventEmitter, Text } from 'react-native';
-import { createAppContainer, createBottomTabNavigator, NavigationActions, NavigationContainerComponent, createStackNavigator, createSwitchNavigator } from 'react-navigation';
+import { StatusBar, View, DeviceEventEmitter, Image, AsyncStorage } from 'react-native';
+import { 
+    createAppContainer, 
+    createBottomTabNavigator, 
+    NavigationActions, 
+    NavigationContainerComponent, 
+    createStackNavigator, 
+    createSwitchNavigator, 
+    HeaderBackButton} from 'react-navigation';
 import Login from './Views/Login';
 import Home from './Views/Home';
 import AuthLoadingScreen from './Views/AuthLoadingScreen';
-import Contacts from './Views/Contacts';
-import { Button } from 'antd-mobile-rn';
 import SignInScreen from './Views/SignInScreen';
+import PersonalSetting from './Views/PersonalSetting';
+import ProjectList from './Views/ProjectList';
+import Contacts from './Views/Contacts';
 
-const style = {
-    color: 'white',
-    fontSize: 20,
-    marginTop: 10,
-    backgroundColor: '#3399FF',
-    border: 0,
+function logOut(params: any) {
+    AsyncStorage.clear();
+    params.navigate('Auth');
 }
 
-const AppStack = createStackNavigator(
+const HomeStack = createStackNavigator(
     {
-        Home: { 
+        Home: {
             screen: Home,
             navigationOptions: ({ navigation }: any) => {
                 return {
-                    title: navigation.getParam('routeName', '58企服'),
-                    headerStyle: {
-                        backgroundColor: '#3399FF',
-                        height: 60,
-                    },
-                    headerTintColor: 'yellow',
-                    headerTitleStyle: {
-                        fontSize: 24,
-                    },
-                    headerRight: (
-                        <Button style={style} type="primary" onClick={ () => alert('login out') }>登出</Button>
-                    )
+                    // drawerLabel: 'Home',
+                    // drawerIcon: ({ tintColor }: any) => {
+                    //     <Image source={require('./img/bg.jpg')}
+                    //     style={[{width: 24, height: 24 }, { tintColor: tintColor }]} />
+                    // },
+                    title: navigation.getParam('routeName', '首页'),
                 }
-            },
+            }
         },
-        Contacts: {
+        Project: {
+            screen: ProjectList,
+            navigationOptions: ({ navigation }: any) => {
+                return {
+                    title: navigation.getParam('routeName', '项目列表')
+                }
+            }
+        },
+        Contact: {
             screen: Contacts,
             navigationOptions: ({ navigation }: any) => {
                 return {
-                    title: navigation.getParam('routeName', 'Contacts'),
-                    headerRight: (
-                        <Button onClick={navigation.getParam('count')}>+1</Button>
-                    )
+                    title: navigation.getParam('routeName', '人员列表')
                 }
             }
+        },
+    },
+    {
+        defaultNavigationOptions: {
+            headerStyle: {
+                backgroundColor: '#7C85F8',
+            },
+            headerTintColor: '#fff',
         }
+    }
+);
+const SettingStack = createStackNavigator(
+    {
+        Setting: {
+            screen: PersonalSetting,
+            navigationOptions: ({ navigation }: any) => {
+                return {
+                    title: navigation.getParam('routeName', '设置'),
+                }
+            }
+        },
+    }
+)
+
+const AppStack = createBottomTabNavigator(
+    {
+        Home: HomeStack,
+        Setting: SettingStack,
     },
     {
         initialRouteName: 'Home',
     }
 )
 
-/**
- * 登陆验证
- */
 const AuthStack = createStackNavigator(
     {
-        SignIn: {
-            screen: Login,
-            navigationOptions: ({ navigation }: any) => {
-                return {
-                    title: navigation.getParam('routeName')
-                }
-            }
-        },
-        LoginIn: {
-            screen: SignInScreen,
-            navigationOptions: ({ navigation }: any) => {
-                return {
-                    title: navigation.getParam('routeName', 'Sign In'),
-                    headerStyle: {
-
-                    }
-                }
-            }
-        }
+        Login: Login,
+        SignIn: SignInScreen,
     },
     {
-        initialRouteName: 'SignIn',
+        initialRouteName: 'Login',
     }
 )
 
-/**
- * tab页
- */
-// AppStack.navigationOptions = (
-//     {
-//         Home: {
-//             screen: Home,
-//         },
-//         Contacts: {
-//             screen: Contacts,
-//         }
-//     }
-// )
-
-/**
- * 容器
- */
 const AppContainer = createAppContainer(createSwitchNavigator(
     {
-        AuthLoading: AuthLoadingScreen,
+        AppLoading: AuthLoadingScreen,
         App: AppStack,
         Auth: AuthStack,
     },
     {
-        initialRouteName: 'AuthLoading',
+        initialRouteName: 'AppLoading',
     }
-));
+))
+
 export default AppContainer;

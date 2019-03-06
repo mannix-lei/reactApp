@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, AsyncStorage, StyleSheet } from 'react-native';
 import { Button } from 'antd-mobile-rn';
 
-let time = 5;
+let time = 3;
 
 export default class AuthLoadingScreen extends Component {
 
@@ -17,6 +17,7 @@ export default class AuthLoadingScreen extends Component {
 
     _bootstrapAsync = async () => {
         const token = await AsyncStorage.getItem('token');
+        alert(token);
         let timeOut = setInterval(() => {
             if(time === 1){
                 clearInterval(timeOut);

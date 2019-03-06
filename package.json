@@ -8,17 +8,21 @@
   },
   "dependencies": {
     "@ant-design/icons-react-native": "^1.0.2",
+    "@types/react-native-vector-icons": "^4.6.4",
     "@types/react-navigation": "^3.0.4",
     "antd-mobile-rn": "^2.3.3",
+    "axios": "^0.18.0",
     "babel-plugin-import": "^1.11.0",
     "react": "16.6.3",
     "react-native": "0.58.5",
+    "react-native-blur": "^3.2.2",
     "react-native-gesture-handler": "^1.0.16",
     "react-native-linear-gradient": "^2.5.3",
     "react-native-paper": "^2.12.0",
     "react-native-vector-icons": "^6.3.0",
     "react-navigation": "^3.3.2",
     "react-navigation-material-bottom-tabs": "^1.0.0",
+    "realm": "^2.24.0",
     "tslint": "^5.13.0"
   },
   "devDependencies": {

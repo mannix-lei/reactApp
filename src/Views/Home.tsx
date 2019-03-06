@@ -1,38 +1,25 @@
 import React, { Component } from 'react';
-import { View, AsyncStorage, StyleSheet, ScrollView } from 'react-native';
-import { NavigationActions, NavigationEvents } from 'react-navigation';
-import { Button, Tabs } from 'antd-mobile-rn';
+import { View, AsyncStorage, StyleSheet, ScrollView, Image, findNodeHandle } from 'react-native';
+import { Button, Tabs, Toast } from 'antd-mobile-rn';
 import { BottomNavigation, Text } from 'react-native-paper';
-
-
-// const renderContent = (tab: any, index: number) => {
-//     const style = {
-//         paddingVertical: 40,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         margin: 10,
-//         backgroundColor: '#ddd',
-//     };
-//     const content = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => {
-//         return (
-//             <View key={`${index}_${i}`} style={style}>
-//                 <Text>
-//                     {tab.title} - {i}
-//                 </Text>
-//             </View>
-//         )
-//     });
-
-//     return <ScrollView style={{ backgroundColor: '#fff' }}>{content}</ScrollView>
-// }
+import { BlurView, VibrancyView } from 'react-native-blur';
     
 export default class HomeScreen extends Component {
 
     state = {
-        Pending: 10,
-        serving: 10,
-        finished: 20,
-        canceled: 5,
+        viewRef: null,
+    }
+
+    imageLoaded() {
+        this.setState({ viewRef: findNodeHandle(this.backgroundImage) });
+    }
+
+    successToast() {
+        Toast.success('Loading Success!', 1);
+    }
+
+    componentDidMount() {
+        this.successToast();
     }
 
     _signOutAsync = async () => {
@@ -40,69 +27,89 @@ export default class HomeScreen extends Component {
         (this.props as any).navigation.navigate('Auth');
     }
 
-    // const numRender = render() {
-    //     return (
-    //         <Text style={{ color: 'blue'}}>{this.state.Pending}</Text>
-    //     )
-    // };
-
     render() {
 
-        const tabs = [
-            {
-                title: '全部',
-            },
-            {
-                title: '待服务' + this.state.Pending,
-            },
-            {
-                title: '服务中' + this.state.serving,
-            },
-            {
-                title: '完成' + this.state.finished,
-            },
-            {
-                title: '取消' + this.state.canceled,
-            }
-        ];
-    
-        return (
-            <View style={ styles.bg }>
-                <Tabs tabs={tabs}>
-                    <View style={ styles.all }>
-                        <Text style={ styles.allContent }>
-                            日常保洁（北京898体验店）
-                        </Text>
-                    </View>
-                    <View>
-                        <Text>Content of Second Tab</Text>
-                    </View>
-                    <View>
-                        <Text>Content of Third Tab</Text>
-                    </View>
-                    <View>
-                        <Text>Content of Fourth Tab</Text>
-                    </View>
-                    <View>
-                        <Text>Content of Fifth Tab</Text>
-                    </View>
-                </Tabs>
+        const { navigate } = (this.props as any).navigation;
 
-            </View>
+        return (
+            <View style={styles.bg}>
+                <Image
+                    ref={(img) => { this.backgroundImage = img}}    
+                    source={require('../img/bg.jpg')}
+                    style={styles.absolute}
+                    onLoadEnd={this.imageLoaded.bind(this)}
+                    />
+                <BlurView
+                    style={styles.absolute}
+                    viewRef={this.state.viewRef}
+                    blurType="light"
+                    blurAmount={10}
+                    />
+                <Image style={{ width: 240, height: 80, position: 'absolute', top: 70, }} source={ require('../img/logo.png') } />
+                <View style={styles.btnGroup}>
+                    <Button style={ styles.naviView } onClick={ () => navigate('Project')}>
+                        <Text style={ styles.title }>项目列表</Text>
+                    </Button>
+                    <Button style={ styles.naviView } onClick={ () => navigate('Contact')}>
+                        <Text style={ styles.title }>人员列表</Text>
+                    </Button>
+                    <Button style={ styles.naviView }>
+                        <Text style={ styles.title }>地址列表</Text>
+                    </Button>
+                    <Button style={ styles.naviView }>
+                        <Text style={ styles.title }>关于我们</Text>
+                    </Button>
+                    <Button style={ styles.naviView }>
+                        <Text style={ styles.title }>公司简介</Text>
+                    </Button>
+                    <Button style={ styles.naviView }>
+                        <Text style={ styles.title }>个人设置</Text>
+                    </Button>
+                </View>
+          </View>
         )
     }
 
 }
 
 const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
     bg: {
         flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center', 
+        flexWrap: 'wrap',  
     },
-    all: {
-       alignItems: 'center',
-       marginTop: 10,
+    naviView: {
+        borderColor: 'white', 
+        borderWidth: 2, 
+        width: 100, 
+        height: 100, 
+        borderRadius: 10,
+        margin: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+
     },
-    allContent: {
-        textAlign: 'center',
+    absolute: {
+        position: "absolute",
+        top: 0, left: 0, bottom: 0, right: 0,
+    },
+    title: {
+        fontSize: 15,
+        color: '#6699FF',
+    },
+    btnGroup: {
+        marginTop: 240,
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center', 
+        flexWrap: 'wrap',
     }
 });
